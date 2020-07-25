@@ -46,29 +46,26 @@ public class LottoCrawlController {
     @GetMapping("get")
     public ResponseEntity<LottoRound> getLottoNum() throws JsonProcessingException {
         LottoRound save = null;
-            //20200725 = 921
-            String url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=921";
+        //20200725 = 921
+        String url = "https://www.dhlottery.co.kr/common.do?method=getLottoNumber&drwNo=921";
 
-            UriComponents uriComponents = UriComponentsBuilder
-                    .fromHttpUrl(url)
-                    .build();
-            RestTemplate restTemplate = new RestTemplate();
+        UriComponents uriComponents = UriComponentsBuilder
+                .fromHttpUrl(url)
+                .build();
+        RestTemplate restTemplate = new RestTemplate();
 
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
-            httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
+        HttpHeaders httpHeaders = new HttpHeaders();
+        httpHeaders.set(HttpHeaders.ACCEPT, MediaType.APPLICATION_JSON_VALUE);
+        httpHeaders.set(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_JSON_VALUE);
 
-            HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
+        HttpEntity<?> httpEntity = new HttpEntity<>(httpHeaders);
 
-            ResponseEntity<String> exchange = restTemplate.exchange(uriComponents.toUriString(), HttpMethod.GET, httpEntity, String.class);
+        ResponseEntity<String> exchange = restTemplate.exchange(uriComponents.toUriString(), HttpMethod.GET, httpEntity, String.class);
 
-            String body = exchange.getBody();
-            JsonObject obj = JsonParser.parseString(body).getAsJsonObject();
-            save = lottoCrawlService.save(LottoRound.createLotto(obj));
+        String body = exchange.getBody();
+        JsonObject obj = JsonParser.parseString(body).getAsJsonObject();
+        save = lottoCrawlService.save(LottoRound.createLotto(obj));
 
-
-
-            return ResponseEntity.ok(save);
-
+        return ResponseEntity.ok(save);
     }
 }
